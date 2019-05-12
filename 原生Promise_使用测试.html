@@ -6,55 +6,41 @@
 </head>
 <body>
 
-<script type="text/javascript">
-  const first = () => (new Promise((resolve,reject)=>{
-    console.log(3);  // 1
-    let p = new Promise((resolve, reject)=>{
-      console.log(7);  // 2
-      setTimeout(()=>{
-        console.log(5);
-        resolve(6);
-      },0)
-      resolve(1);
-    });
-    resolve(2);
-    p.then((arg)=>{
-      console.log(arg);
-    });
-
-  }));
-
-  first().then((arg)=>{
-    console.log(arg);
-  });
-  console.log(4);
-</script>
-
-
 <!--promise的基本使用-->
 <!--
 <script type="text/javascript">
-  var promise = new Promise(function (resolve, reject) {
-    setTimeout(function () {
-      // resolve('foo')
-      reject('xxxx')
-    }, 300)
+  const p = new Promise((resolve, reject) => {
+    // 执行异步操作(可能是ajax请求)
+    setTimeout(() => {
+      const time = Date.now()
+      // 如果成功了, 调用resolve(value)指定成功的数据
+      if (time%2===0) {// 假设: 当前时间为偶数代表成功了, 奇数代表失败
+        resolve('成功的数据')
+      } else {
+        // 如果失败了, 调用reject(reason)指定失败的数据
+        reject('失败的原因是....')
+      }
+    }, 1000)
   })
 
-  promise.then(function (value) {
-    console.log(value)
-  }, function (reason) {
-    console.log(reason)
-  })
-
-  console.log(promise)
+  p.then(
+    value => {
+      console.log('onResolved()', value)
+    },
+    reason => {
+      console.log('onRejected()', reason)
+    }
+  )
+  console.log(p)
 </script>-->
+
 
 <!--
 异步实现方式:
-1). 回调
-2). promise ==> gernator ==> async/await
+    1). 回调
+    2). promise
 -->
+<!--
 <script type="text/javascript">
   // 成功的回调函数
   function successCallback(result) {
@@ -72,21 +58,14 @@
   // promise: 创建promise对象(内部会立即执行异步处理)后, 再指定回调函数(甚至可以异步处理结束后)
   createAudioFileAsync(audioSettings).then(successCallback, failureCallback);
 
-  const p = new Promise ((resolve, reject) => {
+</script>-->
 
-    // 执行异步处理
-    axios.get()
-  })
-
-  p.then()
-
-
-</script>
 
 <!--
 回调地狱:
 解决: 使用promise
 -->
+<!--
 <script type="text/javascript">
   doSomething(function(result) {
     doSomethingElse(result, function(newResult) {
@@ -103,14 +82,11 @@
       console.log(`Got the final result: ${finalResult}`);
     })
     .catch(failureCallback);
-</script>
-
-
+</script>-->
 
 
 <!--promise相关代码执行顺序-->
 <!--
-
 <script type="text/javascript">
   let p = new Promise((resolve, reject) => { // 同步执行的回调: 内部会立即调用
     console.log('excutor()  resolve/reject()之前')
@@ -142,11 +118,12 @@
 </script>
 -->
 
+
 <!--
 使用promise简单封装XMLHttpRequest对象(只支持GET)
 -->
-<!--
 
+<!--
 <script type="text/javascript">
   const promiseAjax = function (url) {
     return new Promise(function (resolve, reject) {
@@ -176,32 +153,7 @@
   })
 </script>
 -->
-<!--
-<script type="text/javascript">
 
-  const p1  = new Promise((resolve, reject) => {
-    resolve(2)
-    // reject(3)
-  })
-  const p2 = Promise.resolve(2)
-  const p3 = Promise.reject(3)
-
-
-  const p2 = p1.then(val => {
-    console.log('p1', val)
-    // return 3
-    return new Promise ((resolve, reject) => {
-      resolve(4)
-    })
-  })
-
-  p2.then(val => {
-    console.log('p2', val)
-  })
-
-
-
-</script>-->
 
 <!--
 一旦异常抛出，promise链就会停下来，直接调用链中的catch处理程序来继续当前执行
@@ -234,7 +186,6 @@
 延迟读取异步数据: 在.then()之前promise已变为了fulfilled状态, 后面一旦指定onResolved回调也会异步执行
 -->
 <!--
-
 <script type="text/javascript">
   // const p1 = Promise.resolve('abc')
   const p1 = new Promise((resolve, reject) => {
@@ -268,8 +219,6 @@
       2). promise链式多次调用then()
   then()返回的promise对象
 -->
-
-
 <script type="text/javascript">
   // const p = Promise.resolve('abc')
   // const p = Promise.reject('abc')
@@ -303,7 +252,7 @@
 </script>
 
 <!--
-使用
+测试使用
   Promise.resolve()
   Promise.reject()
   Promise.all()

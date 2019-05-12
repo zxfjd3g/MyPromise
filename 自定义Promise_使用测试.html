@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>自定义Promise测试使用</title>
+</head>
+<body>
+<script type="text/javascript" src="./MyPromise.js"></script>
+<!--
+
+<script type="text/javascript">
+
+  const p = new Promise((resolve, reject) => { // excutor
+    console.log('excutor()')
+    // 模拟做异步处理
+    setTimeout(() => {
+      // 如果成功了, 调用 resolve()
+      if(Date.now()%2===0) { // 假设时间为偶数代表成功了
+        resolve('成功数据')
+
+      // 如果失败了, 调用 reject()
+      } else { // 假设时间为奇数代表成功了
+        reject('失败原因数据')
+      }
+    }, 100)
+
+  })
+  console.log('new Promise() 之后')
+
+  p.then(value => {
+    console.log('onResolved()', value)
+  }, reason => {
+    console.log('onRejected()', reason)
+  })
+
+  p.then(value => {
+    console.log('onResolved2()', value)
+  }, reason => {
+    console.log('onRejected2()', reason)
+  })
+  
+  console.log('promise then()之后')
+</script>
+-->
+
+
+<!--
+then()返回的promise的状态和结果数据由当前promise对象的回调函数的结果决定
+  1. 抛出异常  ===> 返回的promise变为rejected
+  2. 返回一个新的promise ===> 得到新的promise的结果值作为返回的promise的结果值
+  3. 返回一个一般值(包括undefined) ===> 将这个值作为返回的promise的成功值
+-->
+<!--
+
+<script type="text/javascript">
+  new Promise((resolve, reject) => {
+    // resolve(1) // 先修改状态为成功并保存数据, 后面指定的回调函数时调用成功的onResolved回调函数(异步)
+    // reject(1) // 先修改状态为失败并保存数据, 后面指定的回调函数时调用失败的onRejected回调函数(异步)
+    setTimeout(() => { // 先指定回调函数, 内部需要先保存回调函数, 后面resolve()内部修改状态, 保存数据并调用回调函数(异步)
+      resolve(1)
+    })
+  })
+    .then(
+      value => {
+        console.log('p1 onResolved()', value)
+        // 不指定返回值
+        // 返回特定的value
+        // return 2
+        // 返回promise对象
+        // return Promise.resolve(3)
+        // throw xxx
+        // throw 4
+      },
+      reason => {
+        console.log('p1 onRejected()', reason)
+      }
+    )
+    .then(
+      value => {
+        console.log('p2 onResolved()', value)
+        throw 5
+      },
+      reason => {
+        console.log('p2 onRejected()', reason)
+      }
+    )
+    .catch(
+      reason => {
+        console.log('p3 onRejected()', reason)
+      }
+    )
+</script>
+-->
+
+<!--
+<script type="text/javascript">
+  const p1 = Promise.resolve(1)
+  const p2 = Promise.resolve('atguigu')
+  const p3 = Promise.reject(2)
+
+  Promise.all([p1, p2, 3]).then(values => {
+//  Promise.all([p1, p2, 3, p3]).then(values => {
+    console.log('onResolved()', values)
+  }, reason => {
+    console.log('onRejected()', reason)
+  })
+</script>-->
+</body>
+</html>

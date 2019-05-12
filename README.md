@@ -1,9 +1,9 @@
 # 1. 相关API/概念
 ## 1). Promise: 许诺  
     用来创建promise对象的构造函数: function Promise (excutor) {}
-    简洁描述: 一个promise对象用于表示一个异步操作的最终状态（完成或失败），以及该异步操作的结果值
+    简洁描述: 一个promise对象用来表示一个异步操作的最终状态（完成或失败），以及该异步操作的结果值
     详细描述: Promise 对象是一个代理对象（代理一个值），被代理的值在Promise对象创建时是未知的。
-        它允许你为异步操作的成功和失败分别绑定相应的处理方法（handlers）。 
+        它允许你为异步操作的成功和失败分别绑定相应的处理回调函数
         这让异步方法可以像同步方法那样返回值，但并不是立即返回最终执行结果，而是一个能代表未来出现的结果的promise对象
     promise对象的3种状态值
         pending(未决定的): 初始状态，既不是成功，也不是失败状态。
@@ -19,14 +19,15 @@
 
 ## 2). excutor: 执行器
     executor是带有 resolve 和 reject 两个参数的函数: (resolve, reject) => {}
-    由我们定义, 在new Promise()内部会立即同步调用 executor 函数
+    由我们定义, 在new Promise()内部会立即同步调用 executor 函数(不是我们调用的)
+    异步操作的代码应该在此函数中执行, 一般成功后调用resolve(), 失败后调用reject()
 
 ## 3). resolve: 解决
     由Promise函数内部定义, 但由我们调用的函数
     当异步任务成功时, 我们应该调用resolve函数, 并传入需要的value
     resolve函数内部: 
         同步修改promise对象的状态为resolved和保存成功value, 
-        异步调用已经存储的所有onFulfilled回调函数
+        异步执行已经存储的所有onFulfilled回调函数
     
 ## 4). reject: 拒绝
     由Promise函数内部定义, 但由我们调用的函数
@@ -71,14 +72,10 @@
     用来实现批量执行多个promise的异步操作, 返回一个新的promise: Promise.all([promise1, promise2, ...])
     只有当所有异步操作都resolved后, 返回的promise才会变为resolved状态, 只要有一个变为rejected, 返回的promise直接变为rejected
     面试题: 实现一次发多个请求, 只有都成功后才去做处理?
-    
+
 # 2. 自定义Promise
 ## 1). 整体结构
 ## 2). Promise函数的实现
 ## 3). promise.then()/catch()的实现
 ## 4). Promise.resolve()/rejected()的实现
 ## 5). Promise.all()的实现
-
-
-    
-    
